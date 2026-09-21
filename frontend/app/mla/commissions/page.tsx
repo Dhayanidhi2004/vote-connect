@@ -1,0 +1,20 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { IconBriefcase, IconCheck, IconChart } from "@/components/icons";
+import { EmptyState, PageHeader, Spinner, StatTile } from "@/components/ui";
+import { useToast } from "@/components/toast";
+import { api, ApiError } from "@/lib/api";
+import type { Application, PlacementCommission } from "@/lib/types";
+
+const money = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
+export default function CommissionsPage() {
+  const toast = useToast(); const [rows, setRows] = useState<PlacementCommission[] | null>(null); const [apps, setApps] = useState<Application[]>([]); const [appId, setAppId] = useState(""); const [fee, setFee] = useState(""); const [tax, setTax] = useState("0");
+  const load = () => { api.get<PlacementCommission[]>("/api/admin/commissions").then(setRows).catch(() => setRows([])); api.get<Application[]>("/api/admin/placements").catch(() => []); api.get<Application[]>("/api/recruiter/pipeline").then(setApps).catch(() => setApps([])); };
+  useEffect(load, []);
+  async function create(e: React.FormEvent) { e.preventDefault(); try { const row = await api.post<PlacementCommission>("/api/admin/commissions", { application_id: Number(appId), fee_amount: Number(fee), tax_amount: Number(tax) }); setRows((old) => [row, ...(old || [])]); toast("Invoice created", "success"); } catch (error) { toast(error instanceof ApiError ? error.message : "Could not create invoice", "error"); } }
+  async function markPaid(row: PlacementCommission) { try { const updated = await api.patch<PlacementCommission>(`/api/admin/commissions/${row.id}`, { payment_status: "paid" }); setRows((old) => old?.map((item) => item.id === row.id ? updated : item) || []); toast("Payment marked as paid", "success"); } catch { toast("Could not update payment", "error"); } }
+  if (!rows) return <Spinner label="Loading placement invoices..." />;
+  const collected = rows.filter((r) => r.payment_status === "paid").reduce((sum, r) => sum + r.fee_amount + r.tax_amount, 0);
+  return <div className="space-y-6"><PageHeader title="Consultancy commissions" subtitle="Create placement invoices and monitor recruiter payment status." /><div className="grid gap-4 sm:grid-cols-3"><StatTile label="Invoices" value={rows.length} icon={<IconBriefcase />} accent="blue" /><StatTile label="Collected" value={money.format(collected)} icon={<IconCheck />} accent="green" /><StatTile label="Pending" value={rows.filter((r) => r.payment_status !== "paid").length} icon={<IconChart />} accent="orange" /></div><form onSubmit={create} className="card grid gap-3 p-5 sm:grid-cols-4"><input className="input" type="number" value={appId} onChange={(e) => setAppId(e.target.value)} placeholder="Application ID" required /><input className="input" type="number" value={fee} onChange={(e) => setFee(e.target.value)} placeholder="Placement fee" required min="0" /><input className="input" type="number" value={tax} onChange={(e) => setTax(e.target.value)} placeholder="Tax" min="0" /><button className="btn-primary">Create invoice</button><p className="sm:col-span-4 text-xs text-muted">Use a selected or joined application ID from the recruiter pipeline.</p></form>{rows.length ? <section className="card overflow-hidden"><table className="grid-table"><thead><tr><th>Invoice</th><th>Candidate / job</th><th>Company</th><th>Total</th><th>Status</th><th /></tr></thead><tbody>{rows.map((row) => <tr key={row.id}><td className="font-semibold">{row.invoice_number}</td><td>{row.youth_name}<div className="text-xs text-muted">{row.job_title}</div></td><td>{row.company}</td><td>{money.format(row.fee_amount + row.tax_amount)}</td><td className="capitalize">{row.payment_status.replace("_", " ")}</td><td>{row.payment_status !== "paid" && <button className="btn-ghost !min-h-8 !px-3 !py-1" onClick={() => markPaid(row)}>Mark paid</button>}</td></tr>)}</tbody></table></section> : <EmptyState icon={<IconBriefcase />} title="No invoices yet" body="Create an invoice after a candidate is selected or joins." />}</div>;
+}

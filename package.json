@@ -1,0 +1,19 @@
+{
+  "name": "constituency-youth-platform",
+  "version": "1.0.0",
+  "description": "**Voter ID-Based Youth Placement & Skill Development System** — an MLA-sponsored, constituency-level portal connecting **Youth**, **Recruiters**, and **Skill Development Centers**, with AI skill-gap analysis and job matching.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "supabase": "^2.109.0"
+  }
+}

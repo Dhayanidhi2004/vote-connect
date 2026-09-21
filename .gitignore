@@ -1,0 +1,30 @@
+# Node
+node_modules/
+.pnpm-store/
+.next/
+.next-dev/
+.next-prod/
+.next-prod-stale-20260801/
+.next-prod-stale-*/
+out/
+
+# Python
+__pycache__/
+.venv/
+.env
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+# Logs
+*.log
+
+# Database
+*.db
+
+# TypeScript build cache
+*.tsbuildinfo
+
+# Environment files
+.env.local
