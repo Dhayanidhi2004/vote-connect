@@ -9,6 +9,8 @@ import {
   IconUsers,
 } from "@/components/icons";
 
+const TN_OPPORTUNITY_URL = "https://tamil-nadu-youth-opportunity.vercel.app/";
+
 const navItems = [
   ["Home", "#home"],
   ["About Us", "#about"],
@@ -83,6 +85,21 @@ export default function HomePage() {
           <Link href="/login" className="inline-flex h-[50px] items-center gap-5 rounded-[8px] bg-[#288b2d] px-8 text-[16px] font-semibold text-white shadow-[0_8px_20px_rgba(40,139,45,.2)] hover:bg-[#207625]">Get Started <IconArrowRight width={18} height={18}/></Link>
           <Link href="#services" className="inline-flex h-[50px] items-center gap-5 rounded-[8px] border border-[#85b88a] bg-white px-8 text-[16px] font-semibold text-[#177126] hover:bg-[#f1f8f1]">Learn More <IconArrowRight width={18} height={18}/></Link>
         </div>
+        <a
+          href={TN_OPPORTUNITY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group mt-7 flex max-w-[480px] items-center gap-4 rounded-[14px] border border-[#cfe0fb] bg-white/90 p-4 pr-5 shadow-[0_10px_26px_rgba(11,37,86,.10)] backdrop-blur transition hover:-translate-y-0.5 hover:border-[#8fb3ef] hover:shadow-[0_14px_32px_rgba(11,37,86,.16)]"
+          aria-label="Open TN Youth Opportunity Network in a new tab"
+        >
+          <span className="grid h-[48px] w-[48px] shrink-0 place-items-center rounded-full bg-[#1559cf] text-white"><IconChart width={24} height={24}/></span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[11px] font-bold uppercase tracking-[.12em] text-[#2a8b30]">Statewide · All 38 districts</span>
+            <span className="mt-1 block text-[17px] font-extrabold leading-tight text-[#093179]">TN Youth Opportunity Network</span>
+            <span className="mt-0.5 block text-[13px] text-[#4b5563]">Education, industry &amp; jobs across Tamil Nadu</span>
+          </span>
+          <span className="shrink-0 text-[20px] font-bold text-[#1559cf] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true">↗</span>
+        </a>
       </div>
 
       <div id="services" className="absolute bottom-6 right-[2.5%] z-20 hidden w-[675px] grid-cols-4 rounded-[18px] border border-[#dfe5ed] bg-white px-4 py-5 shadow-[0_15px_40px_rgba(11,37,86,.15)] lg:grid scroll-mt-28">
