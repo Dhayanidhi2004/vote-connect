@@ -9,7 +9,7 @@ import {
   IconUsers,
 } from "@/components/icons";
 
-const TN_OPPORTUNITY_URL = "https://tamil-nadu-youth-opportunity.vercel.app/";
+const TN_OPPORTUNITY_URL = "https://tn-youth-web.onrender.com/";
 
 const navItems = [
   ["Home", "#home"],
